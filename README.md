@@ -61,7 +61,7 @@ The Tkinter Hospital Management System is a desktop application that helps hospi
 
 - **Python**: The main programming language.
 - **Tkinter**: For building the GUI.
-- **MongoDB**: For database management (or specify the database used).
+- **MongoDB**: For database management 
 
 
 ## Contributing
