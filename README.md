@@ -5,9 +5,7 @@ A graphical user interface (GUI) application built using Python's Tkinter librar
 ## Table of Contents
 
 - [Overview](#overview)
-- [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Screenshots](#screenshots)
 - [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
@@ -15,16 +13,8 @@ A graphical user interface (GUI) application built using Python's Tkinter librar
 
 ## Overview
 
-The Tkinter Hospital Management System is a desktop application that helps hospitals manage various operations such as patient registration, appointment scheduling, doctor information management, billing, and room allocation.
+The Tkinter Hospital Management System is a desktop application that helps hospitals manage various operations such as patient registration.
 
-## Features
-
-- **Patient Registration**: Add and manage patient details.
-- **Appointment Scheduling**: Schedule appointments with doctors.
-- **Doctor Management**: Maintain records of doctors and their specializations.
-- **Billing System**: Generate and manage bills for patients.
-- **Room Allocation**: Manage room assignments for patients.
-- **User Authentication**: Secure login system for authorized personnel.
 
 ## Installation
 
@@ -46,12 +36,6 @@ The Tkinter Hospital Management System is a desktop application that helps hospi
     ```bash
     python main.py
     ```
-
-## Usage
-
-1. **Run the application** using the command mentioned above.
-2. **Login as admin or user** to access different features.
-3. **Navigate** through the system to manage hospital operations such as patient registration, appointment scheduling, and billing.
 
 ## Screenshots
 ![Hospital Management System UI](img/hospital_management_system.png)
