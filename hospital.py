@@ -122,12 +122,22 @@ class Hospital:
         return f"#{r:02x}{g:02x}{b:02x}"
 
     def insertFun(self):
+        patient_id = self.idIn.get()
+        if not patient_id:
+            tk.messagebox.showerror("Error", "Patient ID is required.")
+            return
+
+        existing_patient = self.collection.find_one({"id": patient_id})
+        if existing_patient:
+            tk.messagebox.showerror("Error", f"Patient ID {patient_id} already exists.")
+            return
+
         patient = {
-            "id": self.idIn.get(),
+            "id": patient_id,
             "name": self.nameIn.get(),
             "bGroup": self.bgIn.get(),
             "disease": self.desIn.get(),
-            "hPoint": int(self.hpIn.get()),
+            "hPoint": int(self.hpIn.get()) if self.hpIn.get().isdigit() else 0,
             "medication": self.medIn.get(),
             "addr": self.addrIn.get(),
         }
@@ -135,17 +145,14 @@ class Hospital:
         if all(patient.values()):
             try:
                 self.collection.insert_one(patient)
-                self.tabFun()
-                self.table.delete(*self.table.get_children())
-                self.updateTable()
-
+                self.viewAllPatients()
                 tk.messagebox.showinfo("Success", f"Patient {patient['name']} has been admitted.")
                 self.clearFun()
-
             except Exception as e:
                 tk.messagebox.showerror("Error", f"Error: {e}")
         else:
             tk.messagebox.showerror("Error", "Please fill in all the fields!")
+
 
     def updateTable(self):
         patients = self.collection.find()
@@ -184,54 +191,50 @@ class Hospital:
             ))
 
     def medicsFun(self):
-        pId = self.pIdIn.get()
-        if pId:
-            if len(pId) == 12:
-                patient = self.collection.find_one({"id": pId})
-                if patient:
-                    self.tabFun()
-                    self.table.delete(*self.table.get_children())
-                    self.table.insert('', tk.END, values=(patient["id"], patient["name"], patient["bGroup"], patient["disease"], patient["hPoint"], patient["medication"], patient["addr"]))
-                else:
-                    tk.messagebox.showerror("Error", "Patient not found.")
+        name = self.pIdIn.get().strip()
+        if name:
+            patient = self.collection.find_one({"name": name})
+            if patient:
+                self.table.delete(*self.table.get_children())
+                self.table.insert('', tk.END, values=(
+                    patient["id"], patient["name"], patient["bGroup"],
+                    patient["disease"], patient["hPoint"], patient["medication"], patient["addr"]
+                ))
             else:
-                tk.messagebox.showerror("Error", "Please enter a valid 12-digit Patient ID")
+                tk.messagebox.showerror("Error", "Patient not found.")
         else:
-            tk.messagebox.showerror("Error", "Please enter Patient ID")
+            tk.messagebox.showerror("Error", "Please enter the patient's name.")
+
 
     def hPointFun(self):
-        pId = self.pIdIn.get()
-        if pId:
-            if len(pId) == 12:
-                patient = self.collection.find_one({"id": pId})
-                if patient:
-                    new_points = int(self.hpIn.get()) + patient["hPoint"]
-                    self.collection.update_one({"id": pId}, {"$set": {"hPoint": new_points}})
-                    tk.messagebox.showinfo("Success", f"Updated Health Points for patient {pId}")
-                    self.tabFun()
-                    self.clearFun()
-                else:
-                    tk.messagebox.showerror("Error", "Patient not found.")
+        name = self.pIdIn.get().strip()
+        if name:
+            patient = self.collection.find_one({"name": name})
+            if patient:
+                new_points = int(self.hpIn.get()) + patient["hPoint"]
+                self.collection.update_one({"name": name}, {"$set": {"hPoint": new_points}})
+                tk.messagebox.showinfo("Success", f"Updated Health Points for patient {name}.")
+                self.viewAllPatients()
+                self.clearFun()
             else:
-                tk.messagebox.showerror("Error", "Please enter a valid 12-digit Patient ID")
+                tk.messagebox.showerror("Error", "Patient not found.")
         else:
-            tk.messagebox.showerror("Error", "Please enter Patient ID")
+            tk.messagebox.showerror("Error", "Please enter the patient's name.")
+
 
     def disFun(self):
-        pId = self.pIdIn.get()
-        if pId:
-            if len(pId) == 12:
-                patient = self.collection.find_one({"id": pId})
-                if patient:
-                    self.collection.delete_one({"id": pId})
-                    tk.messagebox.showinfo("Success", f"Patient {pId} has been discharged.")
-                    self.tabFun()
-                else:
-                    tk.messagebox.showerror("Error", "Patient not found.")
+        name = self.pIdIn.get().strip()
+        if name:
+            patient = self.collection.find_one({"name": name})
+            if patient:
+                self.collection.delete_one({"name": name})
+                tk.messagebox.showinfo("Success", f"Patient {name} has been discharged.")
+                self.viewAllPatients()
             else:
-                tk.messagebox.showerror("Error", "Please enter a valid 12-digit Patient ID")
+                tk.messagebox.showerror("Error", "Patient not found.")
         else:
-            tk.messagebox.showerror("Error", "Please enter Patient ID")
+            tk.messagebox.showerror("Error", "Please enter the patient's name.")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
