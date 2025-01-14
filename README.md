@@ -40,7 +40,7 @@ The Tkinter Hospital Management System is a desktop application that helps hospi
     ```bash
     pip install -r requirements.txt
     ```
-    *(If a `requirements.txt` file is not present, ensure you have Tkinter and SQLite installed.)*
+    
 
 4. **Run the application**:
     ```bash
@@ -54,7 +54,7 @@ The Tkinter Hospital Management System is a desktop application that helps hospi
 3. **Navigate** through the system to manage hospital operations such as patient registration, appointment scheduling, and billing.
 
 ## Screenshots
-![Hospital Management System UI](images/hospital_management_system.png)
+![Hospital Management System UI](img/hospital_management_system.png)
 
 
 ## Technologies Used
